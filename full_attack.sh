@@ -38,6 +38,13 @@ else
     use_cookie="-c $cookie"
 fi
 
+ifconfig -a | grep "$interface" >/dev/null
+if [ "$?" -ne 0 ]
+then
+    echo "Error: interface \"$interface\" does not exist"
+    exit;
+fi
+
 target_mac="$3";
 
 tmpfile=$(mktemp)
