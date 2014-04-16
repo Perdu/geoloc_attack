@@ -18,6 +18,8 @@ my $page;
 my %h;
 my $pagestart = 0;
 my $end = 0;
+my $cookie;
+my $default_cookie = 'auth=citi_test3%3A905318744%3A1394028288%3AJ9diNCAcDNc6yyT3MkxSZQ';
 
 my $r = '<td>.*?</td>';
 my $precision = 0.002;
@@ -26,13 +28,15 @@ our $opt_u = 0;
 our $opt_h = 0;
 our $opt_a = 0;
 our $opt_m = 0;
+our $opt_c = "";
 
-getopts('uham');
+getopts('uhamc:');
 my $lat = shift;
 my $long = shift;
 
 if (!defined $lat || !defined $long || $opt_h == 1) {
-	print "Usage: get_ssid_list.pl [-u] [-h] [-a|-m] lat long\n";
+	print "Usage: get_ssid_list.pl [-c <cookie>] [-u] [-h] [-a|-m] lat long\n";
+	print "-c <cookie>: use a different authentication cookie for Wigle\n";
 	print "-h: prints this help message and exit\n";
 	print "-u: display each ssid only once (otherwise, new ssids are generated)\n";
 	print "-a: format for aircrack-ng (default)\n";
@@ -48,8 +52,13 @@ if ($opt_a == $opt_m) {
 	exit 1;
 }
 
-# @Todo: parameter for the cookie
-$mech->add_header('Cookie' => 'auth=citi_test3%3A905318744%3A1394028288%3AJ9diNCAcDNc6yyT3MkxSZQ');
+if ($opt_c eq "") {
+	$cookie = $default_cookie;
+} else {
+       $cookie = $opt_c;
+}
+
+$mech->add_header('Cookie' => $cookie);
 
 while (!$end) {
 

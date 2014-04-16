@@ -1,5 +1,11 @@
 # Enter your Google API key here
 api_key=""
+# If you do not provide your own cookie here, default cookie will be used
+# But chances are that it won't be useable anymore for that day.
+# Here are some other cookies you can use:
+# 'auth=citi_test2%3A370441097%3A1394015659%3AuboUEm2EVrutDfl8j22iuw'
+# 'auth=citi_test%3A475598024%3A1394104777%3A%2BXw0IDx6G%2FvLle0F2LVa3A'
+cookie=""
 interface="wlan0";
 # You must have package tor installed.
 use_tor=1;

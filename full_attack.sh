@@ -30,6 +30,13 @@ else
     torify=""
 fi
 
+if [ "$cookie" -eq "" ]
+then
+    use_cookie=""
+else
+    use_cookie="-c $cookie"
+fi
+
 target_mac="$3";
 
 tmpfile=$(mktemp)
@@ -38,7 +45,7 @@ tmpfile2=$(mktemp)
 trap "kill 0" EXIT
 
 echo "Getting a list of APs close to the provided location from Wigle..."
-$torify ./get_ssid_list.pl "$1" "$2" > $tmpfile
+$torify ./get_ssid_list.pl "$use_cookie" "$1" "$2" > $tmpfile
 if [ $? -ne 0 ]
 then
     exit;
