@@ -7,22 +7,30 @@
 # In order to use this script, you must have:
 # - an interface wlan0
 
-# @TODO : command line options for these parameters
-# @TODO: separate precision for longitude and latitude
-interface="wlan0";
-interface_scan="wlan0";
-precision=0.0005;
-torify="";
-# Enter your Google API key here
-api_key="";
-# Enter target MAC address here
-target_mac="";
-
-if [ "$#" -ne 2 ]
+if [ "$#" -ne 3 ]
 then
-    echo "Usage : $0 <lat> <long>";
+    echo "Usage : $0 <lat> <long> <target_mac>";
     exit;
 fi
+
+. ./config.sh
+
+if [ "$api_key" eq "" ]
+then
+    echo "You must provide a Google API key for the script to work. Please read the documentation."
+    exit;
+fi
+
+if [ "$use_tor" eq 1 ]
+then
+    echo "Using Tor"
+    torify="torify"
+else
+    echo "Not using Tor"
+    torify=""
+fi
+
+target_mac="$3";
 
 tmpfile=$(mktemp)
 tmpfile2=$(mktemp)
@@ -43,7 +51,7 @@ echo "We need to be root for this"
 sudo ifconfig "$interface" down \
   && sudo iwconfig "$interface" mode managed \
   && sudo ifconfig "$interface" up
-./get_current_ssid.pl "$interface_scan" >> $tmpfile
+./get_current_ssid.pl "$interface" >> $tmpfile
 echo "Got " $(echo $(cat $tmpfile | wc -l) "-$nb_aps" | bc) "new APs."
 sudo ifconfig "$interface" down \
   && sudo iwconfig "$interface" mode monitor \
