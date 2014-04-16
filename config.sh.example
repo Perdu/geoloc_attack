@@ -9,5 +9,7 @@ cookie=""
 interface="wlan0";
 # You must have package tor installed.
 use_tor=1;
-# Precision of the Twitter monitoring
+# Precision of the Twitter monitoring (the bigger this number, the wider the
+# area of monitored tweets will be, and thus the number of false positives)
+# For isntance, 0.0005 is a few dozens meters
 precision=0.0005;
