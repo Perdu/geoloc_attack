@@ -5,9 +5,7 @@
 # arg1 = latitude
 # arg2 = longitude
 # In order to use this script, you must have:
-# - an interface wlan0 configured in managed mode
-# - an interface mon0 configured in monitor mode
-# Easiest way to achieve this is with airmon-ng: sudo airmon-ng start wlan0
+# - an interface wlan0
 
 # @TODO : command line options for these parameters
 # @TODO: separate precision for longitude and latitude

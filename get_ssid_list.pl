@@ -5,8 +5,6 @@
 # arg2 = longitude
 # todo: displaying only unique ssid should be an option
 
-# addresscode=&statecode=&zipcode=&variance=0.010&latrange1=45.190000&latrange2=45.200000&longrange1=5.770000&longrange2=5.780000&lastupdt=&netid=&ssid=&Query=Query
-
 use strict;
 use warnings;
 
@@ -111,8 +109,6 @@ while (!$end) {
 if (scalar(keys %h) == 0) {
 	print STDERR "Error: Got 0 AP\n";
 	print STDERR "This location has no AP at this precision: $precision\n";
-#	print STDERR "Pinting the page for debug\n";
-#	print STDERR $page;
 	exit 1;
 }
 
