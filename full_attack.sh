@@ -15,13 +15,13 @@ fi
 
 . ./config.sh
 
-if [ "$api_key" eq "" ]
+if [ "$api_key" == "" ]
 then
     echo "You must provide a Google API key for the script to work. Please read the documentation."
     exit;
 fi
 
-if [ "$use_tor" eq 1 ]
+if [ "$use_tor" -eq 1 ]
 then
     echo "Using Tor"
     torify="torify"
@@ -30,10 +30,11 @@ else
     torify=""
 fi
 
-if [ "$cookie" -eq "" ]
+if [ "$cookie" == "" ]
 then
     use_cookie=""
 else
+    echo "Using custom cookie"
     use_cookie="-c $cookie"
 fi
 
@@ -45,7 +46,7 @@ tmpfile2=$(mktemp)
 trap "kill 0" EXIT
 
 echo "Getting a list of APs close to the provided location from Wigle..."
-$torify ./get_ssid_list.pl "$use_cookie" "$1" "$2" > $tmpfile
+$torify ./get_ssid_list.pl $use_cookie "$1" "$2" > $tmpfile
 if [ $? -ne 0 ]
 then
     exit;
