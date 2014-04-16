@@ -9,6 +9,5 @@ cookie=""
 interface="wlan0";
 # You must have package tor installed.
 use_tor=1;
-# @TODO: separate precision for longitude and latitude
 # Precision of the Twitter monitoring
 precision=0.0005;

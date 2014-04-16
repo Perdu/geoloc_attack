@@ -4,8 +4,8 @@
 # Written by Célestin Matte @ citi, Inria, 2014
 # arg1 = latitude
 # arg2 = longitude
-# In order to use this script, you must have:
-# - an interface wlan0
+# arg3 = mac address of the target
+# You can configure this script in config.sh
 
 if [ "$#" -ne 3 ]
 then
@@ -50,6 +50,7 @@ target_mac="$3";
 tmpfile=$(mktemp)
 tmpfile2=$(mktemp)
 
+# Proper exit on ^C
 trap "kill 0" EXIT
 
 echo "Getting a list of APs close to the provided location from Wigle..."
@@ -75,11 +76,11 @@ echo "Checking the precise location that we should get from Google API..."
 ./convert_to_google_api.pl $tmpfile > $tmpfile2
 res=$(curl -d @$tmpfile2 -H "Content-Type: application/json" -i "https://www.googleapis.com/geolocation/v1/geolocate?key=$api_key" 2>/dev/null)
 
-echo -n "Now, open another terminal and launch : php filter-track-geo.php "
+# echo -n "Now, open another terminal and launch: php filter-track-geo.php "
+echo -n "Launching Twitter monitoring "
 lat=$(echo $res | sed -r 's/.*"lat": (-?[0-9\.]+).*/\1/')
 long=$(echo $res | sed -r 's/.*"lng": (-?[0-9\.]+).*/\1/')
-echo $(echo $lat-$precision | bc) $(echo $long-$precision | bc) $(echo $lat+$precision | bc) $(echo $long+$precision | bc)
-echo "(Estimated coordinates: $lat $long, with precision $precision"
+echo "(Estimated coordinates: $lat $long, with precision $precision)"
 
 php filter-track-geo.php $(echo $lat-$precision | bc) $(echo $long-$precision | bc) $(echo $lat+$precision | bc) $(echo $long+$precision | bc) &
 
