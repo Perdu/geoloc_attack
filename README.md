@@ -27,3 +27,10 @@ To make it work:
   case, you will have to create an account and provide the associated cookie.
 
 Once everything is set up, launch full_attack.sh <lat> <long> <target_mac>
+Then check that the location is indeed modified on target device.
+
+To do:
+- Switching some options from the config file to command line parameters with
+  a nice Getopt like in get_ssid_list.pl could be nice.
+- Integrate the aircrack patch into core aircrack-ng
+- Add mdk3 support
