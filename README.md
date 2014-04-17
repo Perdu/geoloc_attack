@@ -17,7 +17,7 @@ To make it work:
 - you must have a wireless interface supporting monitor mode and packet
   injection (if it is not called wlan0, modify config.sh)
 - You must provide OAuth data and credentials for the Twitter API in
-  config.php
+  config.php: see for instance https://dev.twitter.com/discussions/631
 - you must provide a Google API key in config.sh. See for instance http://www.w3schools.com/googleapi/google_maps_api_key.asp
 - We provide a cookie to use Wigle. As Wigle limits the number of queries to
   about 10-20 requests per account *or* per IP, chances are the default cookie
