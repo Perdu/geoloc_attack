@@ -33,7 +33,7 @@ if ($? ne 0) {
 
 while ($res =~ /Address: ([0-9A-F:]+).\s+Channel:(\d+).*?ESSID:"(.*?)"/sg) {
 	if ($opt_m == 1) {
-		print "$1 $3 $2\n";
+		print "$1 $2 $3\n";
 	} else {
 		print "$1:$3\n";
 	}
