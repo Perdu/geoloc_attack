@@ -13,7 +13,13 @@ then
     exit;
 fi
 
-. ./config.sh
+if [ -f ./config.sh ]
+then
+    . ./config.sh
+else
+    echo "File config.sh not found. Please copy config.sh.example and provide all required information (cf. README.md)"
+    exit;
+fi
 
 if [ "$api_key" == "" ]
 then
