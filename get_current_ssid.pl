@@ -25,8 +25,9 @@ if ($opt_a == $opt_m) {
 
 my $res = `sudo iwlist $interface scanning`;
 if ($? ne 0) {
-    print STDERR "Warning: Failed to scan the network.\n" .
-	"Check that no network-handling software is running (e.g. network-manager, ifplugd...)\n";
+    print STDERR "***** Warning ******\nFailed to scan the network.\n" .
+	"Check that no network-handling software is running (e.g. network-manager, ifplugd...)\n" .
+	    "********************\n";
     exit 1;
 }
 
