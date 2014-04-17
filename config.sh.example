@@ -19,3 +19,9 @@ precision=0.0005;
 # more precise your attack will be.
 # If nothing is provided, defaults to 0.002.
 precision_wigle="";
+# Whether to use aircrack or mdk3 (default: aircrack)
+# Enter "" or anything else for aircrack, "mdk3" for mdk3
+# PLEASE NOTE that you can't target a single device with mdk3, unless you
+# compile it with a hardcoded mac address (on mdk3.c:1980 : replace
+# \xff\xff\xff\xff\xff\xff by the target MAC)
+use=""
