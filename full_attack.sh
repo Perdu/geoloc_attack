@@ -74,7 +74,15 @@ sudo ifconfig "$interface" down \
   && sudo iwconfig "$interface" mode managed \
   && sudo ifconfig "$interface" up
 ./get_current_ssid.pl "$interface" >> $tmpfile
-echo "Got " $(echo $(cat $tmpfile | wc -l) "-$nb_aps" | bc) "new APs."
+nb_visible_aps=$(echo $(cat $tmpfile | wc -l) "-$nb_aps" | bc)
+echo "Got $nb_visible_aps new APs."
+if [ "$nb_visible_aps" -gt "$nb_aps" ]
+then
+    echo "********************* Warning ********************"
+    echo "Got less access points than visible access points."
+    echo "Chances are that the attack won't work"
+    echo "**************************************************"
+fi
 sudo ifconfig "$interface" down \
   && sudo iwconfig "$interface" mode monitor \
   && sudo ifconfig "$interface" up
