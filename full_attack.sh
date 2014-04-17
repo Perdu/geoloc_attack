@@ -13,6 +13,8 @@ then
     exit;
 fi
 
+############## Configs and options handling
+
 if [ -f ./config.sh ]
 then
     . ./config.sh
@@ -67,6 +69,8 @@ tmpfile2=$(mktemp)
 
 # Proper exit on ^C
 trap "kill 0" EXIT
+
+############## Main script
 
 echo "Getting a list of APs close to the provided location from Wigle..."
 $torify ./get_ssid_list.pl $use_cookie $use_precision_wigle "$1" "$2" > $tmpfile
