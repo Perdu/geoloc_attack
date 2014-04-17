@@ -24,6 +24,11 @@ if ($opt_a == $opt_m) {
 }
 
 my $res = `sudo iwlist $interface scanning`;
+if ($? ne 0) {
+    print STDERR "Warning: Failed to scan the network.\n" .
+	"Check that no network-handling software is running (e.g. network-manager, ifplugd...)\n";
+    exit 1;
+}
 
 while ($res =~ /Address: ([0-9A-F:]+).\s+Channel:(\d+).*?ESSID:"(.*?)"/sg) {
 	if ($opt_m == 1) {

@@ -72,6 +72,11 @@ echo "Got " $(echo $(cat $tmpfile | wc -l) "-$nb_aps" | bc) "new APs."
 sudo ifconfig "$interface" down \
   && sudo iwconfig "$interface" mode monitor \
   && sudo ifconfig "$interface" up
+if [ $? -ne 0 ]
+then
+    echo "Failed to put interface $interface in monitor mode. Check that no network-handling software is running (e.g. network-manager, ifplugd...)"
+    exit;
+fi
 echo "Checking the precise location that we should get from Google API..."
 ./convert_to_google_api.pl $tmpfile > $tmpfile2
 res=$(curl -d @$tmpfile2 -H "Content-Type: application/json" -i "https://www.googleapis.com/geolocation/v1/geolocate?key=$api_key" 2>/dev/null)
