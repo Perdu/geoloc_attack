@@ -13,3 +13,9 @@ use_tor=1;
 # area of monitored tweets will be, and thus the number of false positives)
 # For isntance, 0.0005 is a few dozens meters
 precision=0.0005;
+# Precision of the Wigle search
+# The lower the number, the lower the range of fetched APs
+# In other words : the lower the number, the fewer APs you will get, but the
+# more precise your attack will be.
+# If nothing is provided, defaults to 0.002.
+precision_wigle="";

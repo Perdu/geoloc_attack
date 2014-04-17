@@ -44,6 +44,15 @@ else
     use_cookie="-c $cookie"
 fi
 
+if [ "$precision_wigle" == "" ]
+then
+    use_precision_wigle=""
+else
+    echo "Using $precision_wigle as a custom precision for Wigle"
+    use_cookie="-p $precision_wigle"
+fi
+
+
 ifconfig -a | grep "$interface" >/dev/null
 if [ "$?" -ne 0 ]
 then
@@ -60,7 +69,7 @@ tmpfile2=$(mktemp)
 trap "kill 0" EXIT
 
 echo "Getting a list of APs close to the provided location from Wigle..."
-$torify ./get_ssid_list.pl $use_cookie "$1" "$2" > $tmpfile
+$torify ./get_ssid_list.pl $use_cookie $use_precision_wigle "$1" "$2" > $tmpfile
 if [ $? -ne 0 ]
 then
     exit;

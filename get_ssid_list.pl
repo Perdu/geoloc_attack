@@ -29,8 +29,9 @@ our $opt_h = 0;
 our $opt_a = 0;
 our $opt_m = 0;
 our $opt_c = "";
+our $opt_p = 0;
 
-getopts('uhamc:');
+getopts('uhamc:p:');
 my $lat = shift;
 my $long = shift;
 
@@ -41,6 +42,7 @@ if (!defined $lat || !defined $long || $opt_h == 1) {
 	print "-u: display each ssid only once (otherwise, new ssids are generated)\n";
 	print "-a: format for aircrack-ng (default)\n";
 	print "-m: format for mdk3\n";
+	print "-p: change precision of the search (default: $precision)\n";
 	exit 1;
 }
 
@@ -56,6 +58,10 @@ if ($opt_c eq "") {
 	$cookie = $default_cookie;
 } else {
        $cookie = $opt_c;
+}
+
+if ($opt_p != 0) {
+	$precision = $opt_p;
 }
 
 $mech->add_header('Cookie' => $cookie);
