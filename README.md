@@ -11,7 +11,7 @@ Associated paper is yet to be published.
 
 To make it work:
 - download aircrack, patch it with aircrack_patch_attack.txt, and install it
-- download Phirehose and put it in current folder: https://github.com/fennb/phirehose
+- download Phirehose and put it in current folder: git clone https://github.com/fennb/phirehose
 - copy config.sh.example to config.sh
 - copy filter-track-geo.php.example to filter-track-geo.php
 - you must have a wireless interface supporting monitor mode and packet
