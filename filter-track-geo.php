@@ -1,6 +1,12 @@
 <?php
+/*
+ * Most of this file comes from Phirehose's example file of the same name
+ */
+
 require_once('phirehose/lib/Phirehose.php');
 require_once('phirehose/lib/OauthPhirehose.php');
+
+require_once('config.php');
 
 if ($argc != 5) {
     echo "Usage: $argv[0] lat_min long_min lat_max long_max\n";
@@ -30,6 +36,9 @@ class FilterTrackConsumer extends OauthPhirehose
      *       enqueued and processed asyncronously from the collection process.
      */
     $data = json_decode($status, true);
+    /* Added some checks to only display results strictly inside the
+     * provided coordinates (as it is not always the case)
+     */
     if (is_array($data)
 	&& isset($data['user']['screen_name'])
 	&& isset($data['coordinates']['coordinates'][0])
@@ -39,20 +48,11 @@ class FilterTrackConsumer extends OauthPhirehose
 	&& ($data['coordinates']['coordinates'][1] >= lat_min)
 	&& ($data['coordinates']['coordinates'][1] <= lat_max)
 	) {
+	/* Print user ID, tweet and coordinates */
 	print $data['user']['screen_name'] . ': ' . urldecode($data['text']) . " [" . $data['coordinates']['coordinates'][1] . ", " . $data['coordinates']['coordinates'][0] . "]\n";
     }
-//    else print $data['user']['screen_name'] . "\n";
   }
 }
-
-// The OAuth credentials you received when registering your app at Twitter
-define("TWITTER_CONSUMER_KEY", "");
-define("TWITTER_CONSUMER_SECRET", "");
-
-
-// The OAuth data for the twitter account
-define("OAUTH_TOKEN", '');
-define("OAUTH_SECRET", '');
 
 // Start streaming
 $sc = new FilterTrackConsumer(OAUTH_TOKEN, OAUTH_SECRET, Phirehose::METHOD_FILTER);
