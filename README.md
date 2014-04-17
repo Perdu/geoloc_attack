@@ -29,8 +29,19 @@ To make it work:
 Once everything is set up, launch full_attack.sh <lat> <long> <target_mac>
 Then check that the location is indeed modified on target device.
 
+Parts of the script:
+All files of the script can be used as standalone files, and have various
+command line parameters (use -h to see a help for each of them)
+- get_ssid_list.pl: a Wigle crawler
+- get_current_ssid.pl: makes a scan of visible access points and display only
+  useful information (MAC address, SSID, and channel with -m flag)
+- convert_to_google_api.pl: convert a list of AP to a JSON file for the Google
+  Geolocation API
+- filter-track-geo.php: monitor a location and display tweets from that
+  location
+
 To do:
 - Switching some options from the config file to command line parameters with
   a nice Getopt like in get_ssid_list.pl could be nice.
 - Integrate the aircrack patch into core aircrack-ng
-- Add mdk3 support
+- make a patch for mdk3 to allow selecting a single target
