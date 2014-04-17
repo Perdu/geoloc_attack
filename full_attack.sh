@@ -78,10 +78,10 @@ nb_visible_aps=$(echo $(cat $tmpfile | wc -l) "-$nb_aps" | bc)
 echo "Got $nb_visible_aps new APs."
 if [ "$nb_visible_aps" -gt "$nb_aps" ]
 then
-    echo "********************* Warning ********************"
-    echo "Got less access points than visible access points."
-    echo "Chances are that the attack won't work"
-    echo "**************************************************"
+    echo "********************* Warning ********************"	>&2
+    echo "Got less access points than visible access points."	>&2
+    echo "Chances are that the attack won't work"		>&2
+    echo "**************************************************"	>&2
 fi
 sudo ifconfig "$interface" down \
   && sudo iwconfig "$interface" mode monitor \
