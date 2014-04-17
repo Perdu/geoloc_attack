@@ -9,6 +9,8 @@ modify its geolocation and get its owner's Twitter account.
 
 Associated paper is yet to be published.
 
+## Install ##
+
 To make it work:
 - download aircrack, patch it with aircrack_patch_attack.txt, and install it
 - download Phirehose and put it in current folder:
@@ -29,7 +31,7 @@ To make it work:
 Once everything is set up, launch full_attack.sh <lat> <long> <target_mac>
 Then check that the location is indeed modified on target device.
 
-Parts of the script:
+## Parts of the script ##
 All files of the script can be used as standalone files, and have various
 command line parameters (use -h to see a help for each of them)
 - get_ssid_list.pl: a Wigle crawler
@@ -40,7 +42,7 @@ command line parameters (use -h to see a help for each of them)
 - filter-track-geo.php: monitor a location and display tweets from that
   location
 
-To do:
+## To do ##
 - Switching some options from the config file to command line parameters with
   a nice Getopt like in get_ssid_list.pl could be nice.
 - Integrate the aircrack patch into core aircrack-ng
