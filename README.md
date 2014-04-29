@@ -12,7 +12,10 @@ Associated paper is yet to be published.
 ## Install ##
 
 To make it work:
-- download aircrack, patch it with aircrack_patch_attack.txt, and install it
+- download and install this version of aircrack:
+  https://github.com/Perdu/aircrack-ng
+  Note that it contains experimental features which may break regular use of
+  aircrack, so probably do not want to keep it afterwards.
 - download Phirehose and put it in current folder:
   git clone https://github.com/fennb/phirehose
 - copy config.sh.example to config.sh
