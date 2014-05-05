@@ -30,7 +30,7 @@ if ($opt_a == $opt_m) {
 	exit 1;
 }
 
-open (my $file, '<', $filename);
+open (my $file, '<', $filename) or die "Error opening $filename: $!";
 my $first = 1;
 
 print "{\n  'wifiAccessPoints': [\n";
