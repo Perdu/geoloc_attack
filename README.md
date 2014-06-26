@@ -42,8 +42,11 @@ command line parameters (use -h to see a help for each of them)
   useful information (MAC address, SSID, and channel with -m flag)
 - convert_to_google_api.pl: convert a list of AP to a JSON file for the Google
   Geolocation API
-- filter-track-geo.php: monitor a location and display tweets from that
+- filter-track-geo.php: monitors a location and display tweets from that
   location
+- filter_ap_list.sh: checks that every access point in a list is known by the
+  Google API (note: assumes that the first one is correct; otherwise it will
+  fail)
 
 ## To do ##
 - Switching some options from the config file to command line parameters with
