@@ -86,14 +86,18 @@ then
 fi
 nb_aps=$(cat $tmpfile | wc -l)
 echo "Got $nb_aps APs"
+
+echo "Checking that obtained APs exist in Google's database"
+$torify ./filter_ap_list.sh $tmpfile
+
 echo "Getting a list of currently visible APs..."
 echo "We need to be root for this"
 # Note : useless with mdk3
 sudo ifconfig "$interface" down \
   && sudo iwconfig "$interface" mode managed \
   && sudo ifconfig "$interface" up
-./get_current_ssid.pl $use_mdk3 "$interface" >> $tmpfile
-nb_visible_aps=$(echo $(cat $tmpfile | wc -l) "-$nb_aps" | bc)
+./get_current_ssid.pl $use_mdk3 "$interface" >> ${tmpfile}_filtre
+nb_visible_aps=$(echo $(cat ${tmpfile}_filtre | wc -l) "-$nb_aps" | bc)
 echo "Got $nb_visible_aps new APs."
 if [ "$nb_visible_aps" -gt "$nb_aps" ]
 then
@@ -111,7 +115,7 @@ then
     exit;
 fi
 echo "Checking the precise location that we should get from Google API..."
-./convert_to_google_api.pl $use_mdk3 $tmpfile > $tmpfile2
+./convert_to_google_api.pl $use_mdk3 ${tmpfile}_filtre > $tmpfile2
 res=$(curl -d @$tmpfile2 -H "Content-Type: application/json" -i "https://www.googleapis.com/geolocation/v1/geolocate?key=$api_key" 2>/dev/null)
 
 # echo -n "Now, open another terminal and launch: php filter-track-geo.php "
