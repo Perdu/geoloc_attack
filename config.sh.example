@@ -9,6 +9,14 @@ cookie=""
 interface="wlan0";
 # You must have package tor installed.
 use_tor=1;
+# Use filter_ap_list script or not. This script checks whether each AP
+# is known by the Google API, in order to improve the precision as
+# well as the chance of success of the attack. To do so, it sends one
+# query per access point. Therefore, this will send around 100 queries
+# per attack, which will make it slower and may have your IP banned
+# from the API. Also, note that it will probably not work if you use
+# Tor.
+check_AP=0;
 # Precision of the Twitter monitoring (the bigger this number, the wider the
 # area of monitored tweets will be, and thus the number of false positives)
 # For isntance, 0.0005 is a few dozens meters

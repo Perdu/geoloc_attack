@@ -26,7 +26,7 @@ tmpfile=$(mktemp)
 tmpfile2=$(mktemp)
 
 # Create a new file with filtered output
-sed -n '1p' "$filename" > "${filename}_filtre"
+sed -n '1p' "$filename"
 
 for i in $(seq 2 $nb_lines)
 do
@@ -46,7 +46,6 @@ do
 	echo -n "$line"				1>&2
 	echo -e " ***\033[0m"			1>&2
     else
-	echo "$line" >> "${filename}_filtre"
+	echo "$line"
     fi
-    echo "$i,$lat,$long,$acc"
 done
