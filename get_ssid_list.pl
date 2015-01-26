@@ -12,7 +12,7 @@ use WWW::Mechanize;
 use URI::Escape;
 use Getopt::Std;
 
-my $url = 'https://wigle.net/gps/gps/main/confirmquery/';
+my $url = 'https://wigle.net/api/v1/jsonSearch';
 my $mech = WWW::Mechanize->new;
 my $page;
 my %h;
@@ -73,8 +73,14 @@ while (!$end) {
 		'latrange2' => $lat + $precision,
 		'longrange1' => $long,
 		'longrange2' => $long + $precision,
-		'Query' => 'Query',
-		'pagestart' => $pagestart
+		'variance' => '0.010',
+		'netid' => '',
+		'ssid' => '',
+		'lastupdt' => '',
+		'addresscode' => '',
+		'statecode' => '',
+		'zipcode' => '',
+		'Query' => 'Query'
 	]);
 
 	$page = $mech->content();
