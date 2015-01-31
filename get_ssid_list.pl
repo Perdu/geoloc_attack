@@ -11,10 +11,13 @@ use warnings;
 use WWW::Mechanize;
 use URI::Escape;
 use Getopt::Std;
+use JSON::Parse 'parse_json';
 
 my $url = 'https://wigle.net/api/v1/jsonSearch';
 my $mech = WWW::Mechanize->new;
 my $page;
+my $json;
+my @results;
 my %h;
 my $pagestart = 0;
 my $end = 0;
@@ -66,64 +69,62 @@ if ($opt_p != 0) {
 
 $mech->add_header('Cookie' => $cookie);
 
-while (!$end) {
+$mech->post($url, [
+	'latrange1' => $lat,
+	'latrange2' => $lat + $precision,
+	'longrange1' => $long,
+	'longrange2' => $long + $precision,
+	'variance' => '0.010',
+	'netid' => '',
+	'ssid' => '',
+	'lastupdt' => '',
+	'addresscode' => '',
+	'statecode' => '',
+	'zipcode' => '',
+	'Query' => 'Query'
+]);
 
-	$mech->post($url, [
-		'latrange1' => $lat,
-		'latrange2' => $lat + $precision,
-		'longrange1' => $long,
-		'longrange2' => $long + $precision,
-		'variance' => '0.010',
-		'netid' => '',
-		'ssid' => '',
-		'lastupdt' => '',
-		'addresscode' => '',
-		'statecode' => '',
-		'zipcode' => '',
-		'Query' => 'Query'
-	]);
+if ($page =~ /too many queries/) {
+	print STDERR "Too many queries\nUse another Wigle cookie or another IP.\n";
+	exit -1;
+}
 
-	$page = $mech->content();
+$page = $mech->content();
+$json = parse_json ($page);
+# @{} returns the array, otherwise we only get the reference and we
+# can't loop through it.
+@results = @{$json->{'results'}};
 
-	if ($page =~ /too many queries/) {
-		print STDERR "Too many queries\nUse another Wigle cookie or another IP.\n";
-		exit -1;
-	}
-	my $i = 0;
-	while ($page =~ m!<td>([0-9A-F:]{17})</td><td>(.{0,32}?)</td>$r$r$r$r$r$r$r$r$r$r$r$r<td>(\d+)</td>!g) {
-		if (!exists($h{$2})) {
-			$h{$2}++;
+foreach my $AP (@results) {
+	my $bssid = $AP->{'netid'};
+	my $ssid = $AP->{'ssid'};
+	my $channel = $AP->{'ssid'};
+	if (!exists($h{$ssid})) {
+		$h{$ssid}++;
+		if ($opt_m == 1) {
+			print "$bssid $channel $ssid\n";
+		} else {
+			print "$bssid:$ssid\n";
+		}
+	} elsif ($opt_u == 0) {
+		# This SSID already exists: generate a new one
+		my $count = 0;
+		my $new_name = $ssid . $count;
+		while(exists $h{$new_name}) {
+			$count++;
+			$new_name = $ssid . $count;
+		}
+		if (length($new_name) > 32) {
+			print STDERR "Could not generate a short " .
+			    "enough name for $ssid\n";
+		} else {
+			$h{$new_name}++;
 			if ($opt_m == 1) {
-				print "$1 $3 $2\n";
+				print "$bssid $channel $new_name\n";
 			} else {
-				print "$1:$2\n";
-			}
-		} elsif ($opt_u == 0) {
-			# This SSID already exists: generate a new one
-			my $count = 0;
-			my $new_name = $2 . $count;
-			while(exists $h{$new_name}) {
-				$count++;
-				$new_name = $2 . $count;
-			}
-			if (length($new_name) > 32) {
-				print STDERR "Could not generate a short " .
-				    "enough name for $2\n";
-			} else {
-				$h{$new_name}++;
-				if ($opt_m == 1) {
-					print "$1 $3 $new_name\n";
-				} else {
-					print "$1:$new_name\n";
-				}
+				print "$bssid:$new_name\n";
 			}
 		}
-		$i++;
-	}
-	if ($i == 100) {
-		$pagestart += 100;
-	} else {
-		$end = 1;
 	}
 }
 
