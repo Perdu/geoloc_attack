@@ -145,5 +145,5 @@ then
     sudo mdk3 "$interface" b -v $tmpfile2 -g -t >/dev/null
 else
     echo -e "\nLaunching the attack with aircrack-ng and the list of APs."
-    sudo airbase-ng -m $tmpfile2 -p -X $target_mac wlan0
+    sudo airbase-ng -m $tmpfile2 -p -X $target_mac "$interface"
 fi
