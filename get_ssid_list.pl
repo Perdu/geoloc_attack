@@ -84,12 +84,13 @@ $mech->post($url, [
 	'Query' => 'Query'
 ]);
 
+$page = $mech->content();
+
 if ($page =~ /too many queries/) {
 	print STDERR "Too many queries\nUse another Wigle cookie or another IP.\n";
 	exit -1;
 }
 
-$page = $mech->content();
 $json = parse_json ($page);
 # @{} returns the array, otherwise we only get the reference and we
 # can't loop through it.
@@ -97,6 +98,8 @@ $json = parse_json ($page);
 
 foreach my $AP (@results) {
 	my $bssid = $AP->{'netid'};
+	# Fix Wigle's sometime broken format "AA:BB:CCDD:EE:FF"
+	$bssid =~ s/([A-F0-9]{2}:[A-F0-9]{2}:[A-F0-9]{2})([A-F0-9]{2}:[A-F0-9]{2}:[A-F0-9]{2})/$1:$2/;
 	my $ssid = $AP->{'ssid'};
 	my $channel = $AP->{'ssid'};
 	if (!exists($h{$ssid})) {
