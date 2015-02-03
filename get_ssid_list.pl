@@ -101,7 +101,7 @@ foreach my $AP (@results) {
 	# Fix Wigle's sometime broken format "AA:BB:CCDD:EE:FF"
 	$bssid =~ s/([A-F0-9]{2}:[A-F0-9]{2}:[A-F0-9]{2})([A-F0-9]{2}:[A-F0-9]{2}:[A-F0-9]{2})/$1:$2/;
 	my $ssid = $AP->{'ssid'};
-	my $channel = $AP->{'ssid'};
+	my $channel = $AP->{'channel'};
 	if (!exists($h{$ssid})) {
 		$h{$ssid}++;
 		if ($opt_m == 1) {
