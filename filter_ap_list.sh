@@ -33,7 +33,7 @@ do
     sed -n '1p' "$filename" > "$tmpfile"
     line=$(sed -n "${i}p" "$filename")
     echo "$line" >> "$tmpfile"
-    convert_to_google_api.pl "$tmpfile" > "$tmpfile2"
+    ./convert_to_google_api.pl "$tmpfile" > "$tmpfile2"
     res=$(curl -d @"$tmpfile2" -H "Content-Type: application/json" -i "https://www.googleapis.com/geolocation/v1/geolocate?key=$api_key" 2>/dev/null)
 
     lat=$(echo $res | sed -r 's/.*"lat": (-?[0-9\.]+).*/\1/')
