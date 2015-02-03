@@ -30,6 +30,9 @@ To make it work:
   about 10-20 requests per account *or* per IP, chances are the default cookie
   will already have been used by somebody else when you try to use it. In that
   case, you will have to create an account and provide the associated cookie.
+- Due to API changes in Wigle, the get_ssid_list.pl script now requires the
+  JSON::Parse perl module, which does not seem to be packaged in most
+  distributions. To install it, run cpan, then type "install JSON::Parse".
 
 Once everything is set up, launch full_attack.sh <lat> <long> <target_mac>
 Then check that the location is indeed modified on target device.
