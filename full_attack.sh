@@ -110,7 +110,7 @@ sudo ifconfig "$interface" down \
   && sudo iwconfig "$interface" mode managed \
   && sudo ifconfig "$interface" up
 ./get_current_ssid.pl $use_mdk3 "$interface" >> $tmpfile2
-nb_visible_aps=$(echo $(cat $tmpfile | wc -l) "-$nb_aps" | bc)
+nb_visible_aps=$(echo $(cat $tmpfile2 | wc -l) "-$nb_aps" | bc)
 echo "Got $nb_visible_aps new APs."
 if [ "$nb_visible_aps" -gt "$nb_aps" ]
 then
