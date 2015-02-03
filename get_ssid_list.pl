@@ -86,9 +86,14 @@ $mech->post($url, [
 
 $page = $mech->content();
 
+if ($page eq "") {
+	print STDERR "Got no answer from Wigle.\n";
+	exit 1;
+}
+
 if ($page =~ /too many queries/) {
 	print STDERR "Too many queries\nUse another Wigle cookie or another IP.\n";
-	exit -1;
+	exit 1;
 }
 
 $json = parse_json ($page);
